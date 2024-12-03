@@ -21,8 +21,7 @@ public static partial class Day3
             {
                 Match = match.Value,
                 Numbers = match.Value.StartsWith("mul") 
-                    ? (X: int.Parse(match.Groups[1].Value), 
-                        Y: int.Parse(match.Groups[2].Value))
+                    ? (X: int.Parse(match.Groups[1].Value), Y: int.Parse(match.Groups[2].Value))
                     : default
             })
             .Aggregate(
