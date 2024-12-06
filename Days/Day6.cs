@@ -65,19 +65,19 @@ public static class Day6
         return lines
             .SelectMany((line, y) => line.Select((c, x) => (c, x, y)))
             .Aggregate(
-                new { blockades = new HashSet<(int, int)>(), guard = (Dir: '.', X: 0, Y: 0) },
+                new { Blockades = new HashSet<(int, int)>(), Guard = (Dir: '.', X: 0, Y: 0) },
                 (aggregateData, currentPos) => currentPos.c switch
                 {
-                    Blockade => aggregateData with { blockades = [..aggregateData.blockades, (currentPos.x, currentPos.y)] },
-                    var c when Moves.ContainsKey(c) => aggregateData with { guard = (c, currentPos.x, currentPos.y) },
+                    Blockade => aggregateData with { Blockades = [..aggregateData.Blockades, (currentPos.x, currentPos.y)] },
+                    var c when Moves.ContainsKey(c) => aggregateData with { Guard = (c, currentPos.x, currentPos.y) },
                     _ => aggregateData
                 })
             .PassAggregate(info => Enumerable.Range(0, height)
                 .SelectMany(y => Enumerable.Range(0, width).Select(x => (x, y)))
                 .AsParallel()
                 .WithDegreeOfParallelism(Environment.ProcessorCount)
-                .Count(pos => !info.blockades.Contains(pos) &&
-                              pos != (info.guard.X, info.guard.Y) &&
+                .Count(pos => !info.Blockades.Contains(pos) &&
+                              pos != (info.Guard.X, info.Guard.Y) &&
                               ((Func<bool>)(() =>
                               {
                                   try
@@ -86,10 +86,10 @@ public static class Day6
                                           .Aggregate(
                                               new
                                               {
-                                                  Pos = (info.guard.X, info.guard.Y),
-                                                  info.guard.Dir,
+                                                  Pos = (info.Guard.X, info.Guard.Y),
+                                                  info.Guard.Dir,
                                                   BlockadesHit = new Dictionary<(int, int), List<char>>(),
-                                                  Blockades = new HashSet<(int, int)>(info.blockades) { pos }
+                                                  Blockades = new HashSet<(int, int)>(info.Blockades) { pos }
                                               },
                                               (aggregateData, _) =>
                                               {
