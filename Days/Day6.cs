@@ -4,21 +4,14 @@ public static class Day6
 {
     private const char Blockade = '#';
 
-    private static readonly Dictionary<char, (int dx, int dy)> Moves = new()
-    {
-        { '^', (0, -1) }, { 'v', (0, 1) }, { '<', (-1, 0) }, { '>', (1, 0) }
-    };
+    private static readonly Dictionary<char, (int dx, int dy)> Moves = new() { { '^', (0, -1) }, { 'v', (0, 1) }, { '<', (-1, 0) }, { '>', (1, 0) } };
 
-    private static readonly Dictionary<char, char> NextDirection = new()
-    {
-        { '^', '>' }, { '>', 'v' }, { 'v', '<' }, { '<', '^' }
-    };
+    private static readonly Dictionary<char, char> NextDirection = new() { { '^', '>' }, { '>', 'v' }, { 'v', '<' }, { '<', '^' } };
 
     public static int Part1(string input)
     {
         var lines = input.Split('\n');
-        var width = lines[0].Length;
-        var height = lines.Length;
+        var (width, height) = (lines[0].Length, lines.Length);
 
         return lines
             .SelectMany((line, y) => line.Select((c, x) => (c, x, y)))
@@ -31,8 +24,7 @@ public static class Day6
                     _ => aggregateData
                 })
             .PassAggregate(info => Enumerable.Range(0, int.MaxValue)
-                .Aggregate(
-                    new
+                .Aggregate(new 
                     {
                         Pos = (info.Guard.X, info.Guard.Y),
                         info.Guard.Dir,
@@ -59,8 +51,8 @@ public static class Day6
     public static int Part2(string input)
     {
         var lines = input.Split('\n');
-        var width = lines[0].Length;
-        var height = lines.Length;
+        
+        var (width, height) = (lines[0].Length, lines.Length);
 
         return lines
             .SelectMany((line, y) => line.Select((c, x) => (c, x, y)))
@@ -76,15 +68,13 @@ public static class Day6
                 .SelectMany(y => Enumerable.Range(0, width).Select(x => (x, y)))
                 .AsParallel()
                 .WithDegreeOfParallelism(Environment.ProcessorCount)
-                .Count(pos => !info.Blockades.Contains(pos) &&
-                              pos != (info.Guard.X, info.Guard.Y) &&
+                .Count(pos => !info.Blockades.Contains(pos) && pos != (info.Guard.X, info.Guard.Y) &&
                               ((Func<bool>)(() =>
                               {
                                   try
                                   {
                                       Enumerable.Range(0, int.MaxValue)
-                                          .Aggregate(
-                                              new
+                                          .Aggregate(new
                                               {
                                                   Pos = (info.Guard.X, info.Guard.Y),
                                                   info.Guard.Dir,
