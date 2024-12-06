@@ -26,10 +26,7 @@ public static class Day6
                 new { blockades = new HashSet<(int, int)>(), guard = (Dir: '.', X: 0, Y: 0) },
                 (aggregateData, currentPos) => currentPos.c switch
                 {
-                    Blockade => aggregateData with
-                    {
-                        blockades = [..aggregateData.blockades, (currentPos.x, currentPos.y)]
-                    },
+                    Blockade => aggregateData with { blockades = [..aggregateData.blockades, (currentPos.x, currentPos.y)] },
                     var c when Moves.ContainsKey(c) => aggregateData with { guard = (c, currentPos.x, currentPos.y) },
                     _ => aggregateData
                 })
@@ -71,10 +68,7 @@ public static class Day6
                 new { blockades = new HashSet<(int, int)>(), guard = (Dir: '.', X: 0, Y: 0) },
                 (aggregateData, currentPos) => currentPos.c switch
                 {
-                    Blockade => aggregateData with
-                    {
-                        blockades = [..aggregateData.blockades, (currentPos.x, currentPos.y)]
-                    },
+                    Blockade => aggregateData with { blockades = [..aggregateData.blockades, (currentPos.x, currentPos.y)] },
                     var c when Moves.ContainsKey(c) => aggregateData with { guard = (c, currentPos.x, currentPos.y) },
                     _ => aggregateData
                 })
