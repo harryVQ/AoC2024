@@ -23,20 +23,20 @@ public static class Day6
         return lines
             .SelectMany((line, y) => line.Select((c, x) => (c, x, y)))
             .Aggregate(
-                new { blockades = new HashSet<(int, int)>(), guard = (Dir: '.', X: 0, Y: 0) },
+                new { blockades = new HashSet<(int, int)>(), Guard = (Dir: '.', X: 0, Y: 0) },
                 (aggregateData, currentPos) => currentPos.c switch
                 {
                     Blockade => aggregateData with { blockades = [..aggregateData.blockades, (currentPos.x, currentPos.y)] },
-                    var c when Moves.ContainsKey(c) => aggregateData with { guard = (c, currentPos.x, currentPos.y) },
+                    var c when Moves.ContainsKey(c) => aggregateData with { Guard = (c, currentPos.x, currentPos.y) },
                     _ => aggregateData
                 })
             .PassAggregate(info => Enumerable.Range(0, int.MaxValue)
                 .Aggregate(
                     new
                     {
-                        Pos = (info.guard.X, info.guard.Y),
-                        info.guard.Dir,
-                        Visited = new HashSet<(int X, int Y)> { (info.guard.X, info.guard.Y) }
+                        Pos = (info.Guard.X, info.Guard.Y),
+                        info.Guard.Dir,
+                        Visited = new HashSet<(int X, int Y)> { (info.Guard.X, info.Guard.Y) }
                     },
                     (aggregateData, _) =>
                     {
